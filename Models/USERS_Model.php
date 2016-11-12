@@ -14,7 +14,7 @@
 
 
 		function getUser(){
-			return $this->usergit;
+			return $this->user;
 		}
 
 		function getPermissions(){

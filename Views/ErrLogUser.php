@@ -2,42 +2,38 @@
 
 class ErrLogUser{
 
-private $msj; 
-private $volver;
-
-function __construct($msj, $volver){
-	$this->msj = $msj;
-	$this->volver = $volver;	
+function __construct(){
+	
 }
 
 function getError(){
 ?>
-<html>
-	<head>
-		<meta charset="UTF-8">
-	</head> 
+	<html>
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+			<link rel="stylesheet" type="text/css" href="Assets/css/styleLogin.css">
+			<link rel="stylesheet" type="text/css" href="Assets/css/bootstrap.css">
+			<link rel="stylesheet" type="text/css" href="Assets/css/bootstrap.min.css">
+			<link rel="stylesheet" type="text/css" href="Assets/css/bootstrap-theme.css">
+			<link rel="stylesheet" type="text/css" href="Assets/css/bootstrap-theme.min.css">
+		</head> 
 
-	<body>
-		<div>
-			<p>
-				<h2>
-					<?php
-					echo $this->msj;
-					?>
-				</h2>
-			</p>
-			<p>
-				<h3>
-					<?php
-					echo "<a href='".$this->volver."'> Volver al login</a><br>";
-					?>
-				</h3>
-			</p>
+		<body>
+			<div class="container">
 
-		</div>
-	</body>
-</html>
+				    <form class="form-signin" action = "../index.html"  method="post" >
+						<h1 class="form-signin-heading ">Usuario incorrecto</h1>
+						<input type="submit" class="btn btn-lg btn-primary btn-block" placeholder="submit" >
+						
+					</form>
+
+				</div>
+			
+				
+		</body>
+	</html>
 <?php
 } //fin metodo render
 
 }
+?>

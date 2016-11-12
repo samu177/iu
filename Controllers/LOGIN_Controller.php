@@ -22,14 +22,15 @@ if (!isset($_REQUEST['user'])){
 }else{
 	$user = get_data_form();
 	$check = $user->checkUser();
-	if($check){
-		//Comenzamos a mostrar la pagina principal
+	if($check)
+{		//Comenzamos a mostrar la pagina principal
 		$user->addPermissions();
-		$main = new Main_View($user);
-		$main->getView();
+		$userName=$user->getUser();
+		$permissions=$user->getPermissions();
+		header("Location: ./CALENDAR_Controller.php?userName=$userName&permissions=$permissions");
 		
 	}else{
-		$error = new ErrLogUser($check, '../index.html');
+		$error = new ErrLogUser($check);
 		$error->getError();
 
 	}
