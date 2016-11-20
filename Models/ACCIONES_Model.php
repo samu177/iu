@@ -120,29 +120,26 @@
 			
 			$sql = "INSERT INTO acciones (NOM_ACC,NOM_CONT) VALUES ('";
 			$sql = $sql."$this->anomb', '$marcado')";
-			if (!$result = $mysqli->query($sql)){
-				return 'No se ha podido conectar con la base de datos'; 	
-			}
-			}
-
-			$sql = "SELECT * FROM acciones WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$antiguo."'";
+			$mysqli->query($sql);
+			$sql = "SELECT * FROM tiene_acc WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$antiguo."'";
 			if (!$result = $mysqli->query($sql)){
 			return 'No se ha podido conectar con la base de datos'; 	
 			}
 			if($result->num_rows!=0){
-			$sql = "DELETE FROM acciones WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$antiguo."'";
+			$sql = "DELETE FROM tiene_acc WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$antiguo."'";
 				if (!$result = $mysqli->query($sql)){
 					return 'c)No se ha podido conectar con la base de datos'; 	
 				}
 			
-			$sql = "INSERT INTO acciones (NOM_ACC,NOM_CONT) VALUES ('";
+			$sql = "INSERT INTO tiene_acc (NOM_ACC,NOM_CONT) VALUES ('";
 			$sql = $sql."$this->anomb', '$marcado')";
-			if (!$result = $mysqli->query($sql)){
-				return 'd)No se ha podido conectar con la base de datos'; 	
-			}
-			
+			$mysqli->query($sql);
 			return 'La modificacion se ha realizado con exito';
-		}
+			}
+
+			}
+
+			
 			
 		}
 
@@ -150,6 +147,10 @@
 			$mysqli=$this->ConectarBD();
 			$controlador=$_SESSION['contrdeacc'];
 			$sql = "DELETE FROM acciones WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$controlador."'";
+			if (!$result = $mysqli->query($sql)){
+				return 'No se ha podido conectar con la base de datos'; 	
+			}
+			$sql = "DELETE FROM tiene_acc WHERE NOM_ACC = '".$this->anomb."' AND NOM_CONT = '".$controlador."'";
 			if (!$result = $mysqli->query($sql)){
 				return 'No se ha podido conectar con la base de datos'; 	
 			}

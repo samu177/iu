@@ -44,7 +44,7 @@
 			break;
 		case '¿Borrar?': $temp = new Accion($anomb);
 						$_SESSION['consulta']=$temp->sacarAcciones();
-						 header("Location: ../Views/GestAcciones/ACCIONES_DELETE_Vista.php?anomb=$anomb");
+						 header("Location: ../Views/GestAcciones/ACCIONES_DELETE_Vista.php?anomb=$anomb&cnomb=$cnomb");
 
 			break;
 		case 'Borrar': $temp = new Accion($anomb);

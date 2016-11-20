@@ -56,7 +56,7 @@ include('../../Interfaz/Cabecera.php');
                         
 						<tr>
 						  	<?php  
-						  	echo "<td id='textoConsultUserxt' align='center'>".constant($am)."</td>";
+						  	echo "<td id='textoConsultUserxt' align='center'>".//if issetconstant($am)."</td>";
 						  	
 						  	echo "<td id='textoConsultUserxt' align='center'>";
 

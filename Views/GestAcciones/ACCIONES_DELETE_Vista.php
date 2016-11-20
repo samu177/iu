@@ -4,12 +4,16 @@ if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
 include('../../Interfaz/Cabecera.php');
+$anomb=$_GET['anomb'];
+$cnomb=$_GET['cnomb'];
 ?>
 <ul class="dropdown-menu" role="menu" id="contBandera">
             <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
             <li id="idioma"><?=IDIOMA?>: </li>
-            <li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=esp&acc=¿Borrar?"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
-            <li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=eng&acc=¿Borrar?"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>
+            <?php
+            echo '<li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=esp&acc=¿Borrar?&anomb='.$anomb.'&cnomb='.$cnomb.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=eng&acc=¿Borrar?&anomb='.$anomb.'&cnomb='.$cnomb.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
+            ?>
           </ul>
         </div>
           

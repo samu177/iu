@@ -264,14 +264,48 @@
 		function modificar(){
 			$mysqli=$this->ConectarBD();
 			$perfA=$_SESSION['perfilAntiguo'];
+			$insertar=$_SESSION['accionInsert'];
 			$sql= "UPDATE perfil SET NOM_PER ='".$this->perfil."' WHERE NOM_PER='".$perfA."'" ;
 				if (!($resultado = $mysqli->query($sql))){
-				return 'Error en la consulta sobre la base de datos';
-				}else{
-			    	return "El perfil ha sido modificado con exito";
-				}
-		 	//añadir acciones y controladores
+				return 'Error1 en la consulta sobre la base de datos';
+				}else{//Bien la primera sentencia
+					$sql= "DELETE FROM tiene_acc WHERE NOM_PER ='".$perfA."'" ;
+					if (!($resultado = $mysqli->query($sql))){
+					return 'Error2 en la consulta sobre la base de datos';
+					}else{//bien borrado tabla acc
+				    	foreach ($insertar as $value) {
+					    	$accionesCambiar = explode("/",$value);
+							$sql = "INSERT INTO tiene_acc (NOM_PER,NOM_ACC,NOM_CONT) VALUES ('";
+							$sql = $sql."$this->perfil', '$accionesCambiar[1]', '$accionesCambiar[0]')";	
+							if (!($resultado = $mysqli->query($sql))){
+								return 'Error3 en la consulta sobre la base de datos';
+							}	
+						}//foreach Bien insert acc
+						$sql= "DELETE FROM tiene_contr WHERE NOM_PER ='".$perfA."'" ;
+						if (!($resultado = $mysqli->query($sql))){
+						return 'Error4 en la consulta sobre la base de datos';
+						}else{//bien borrado tabla contr
+							$comprobacion=array();
+					    	foreach ($insertar as $value) {
+						    	$controladores = explode("/",$value);
+						    	if(!in_array($controladores[0], $comprobacion)){
+						    		$sql = "INSERT INTO tiene_contr (NOM_PER,NOM_CONT) VALUES ('";
+									$sql = $sql."$this->perfil','$controladores[0]')";	
+									if (!($resultado = $mysqli->query($sql))){
+										return 'Error5 en la consulta sobre la base de datos';
+									}	
+									array_push($comprobacion, $controladores[0]);
+						    	}
+									
+								
+							}//foreach Bien insert contr
+							return 'Perfil modificado con éxito';
+						}//else tiene_acc prinicpal	
+					
+			    	
+				}//else principal
 		}
+	}
 
 		function protomodificar(){
 			$result1=$this->juntarControladoresAcciones();
@@ -288,16 +322,29 @@
 
 		function borrar(){
 			$mysqli=$this->conectarBD();
-			$sql ='SELECT * FROM prefil WHERE NOM_PER="'.$this->perfil.'"';
+			$sql ='SELECT * FROM perfil WHERE NOM_PER="'.$this->perfil.'"';
   			$result = $mysqli->query($sql);
   			if ($result->num_rows == 1){
         		$sql = "DELETE FROM perfil WHERE NOM_PER='".$this->perfil."'";
         		$mysqli->query($sql);
-    		return "El usuario ha sido borrado correctamente";
-    		}
-    		else{
+	    		$sql ='SELECT * FROM tiene_contr WHERE NOM_PER="'.$this->perfil.'"';
+	  			$result = $mysqli->query($sql);
+	  			if ($result->num_rows >= 1){
+	  				$sql = "DELETE FROM tiene_contr WHERE NOM_PER='".$this->perfil."'";
+        			$mysqli->query($sql);
+        			$sql ='SELECT * FROM tiene_acc WHERE NOM_PER="'.$this->perfil.'"';
+		  			$result = $mysqli->query($sql);
+		  			if ($result->num_rows >= 1){
+		  				$sql = "DELETE FROM tiene_acc WHERE NOM_PER='".$this->perfil."'";
+        				$mysqli->query($sql);
+        				return "El perfil ha sido borrado";
+		  			}
+	  			}else{
+	  				return "El perfil ha sido borrado";
+	  			}
+    		}else{
 
-        	return "El usuario no existe";
+        	return "El perfil no existe";
     		}
 
 		}

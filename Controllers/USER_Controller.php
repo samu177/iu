@@ -76,7 +76,7 @@
 								$_SESSION['mensaje']=$auxMod;
 								header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 							}else{
-								header("Location: ../Views/GestUser/USER_EDIT_Vista.php");
+								header("Location: ../Views/GestUser/USER_EDIT_Vista.php?usr=$usr");
 							}
 						}else{
 							$temp = new User($usr,$pass,$dni,$perf);
