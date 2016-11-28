@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -31,11 +37,23 @@ include('../../Interfaz/Cabecera.php');
 </div>
 
 <div class="col-xs-8"><!-- 8 -->
+<?php
+
+	$comp=$_SESSION["autorizacion"];
+	$aceptado=false;
+	for ($i=0; $i < sizeof($comp); $i+=2){
+		$cadena=$comp[$i].$comp[$i+1];
+		if($cadena=="GEST_PERFDELETE"){
+			$aceptado=true;
+		}
+	}
+	if($aceptado){
+		?>
 	<div>
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>¿Seguro que quieres borrar este perfil?</legend>
+			<legend><?=DELETE_PROFILE?></legend>
 			
 		</fieldset>
 		
@@ -44,8 +62,8 @@ include('../../Interfaz/Cabecera.php');
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'>Perfil</th>
-                        <th id='textoConsultUser'>Acciones</th>
+                        <th id='textoConsultUser'><?=LABEL_PROFILE?></th>
+                        <th id='textoConsultUser'><?=LABEL_ACTIONS?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
@@ -59,11 +77,26 @@ include('../../Interfaz/Cabecera.php');
 				
 							for ($i=0; $i < sizeof($aux); $i+=2){ 
 								if(!in_array($aux[$i],$controladores)){
-									echo "<strong >".constant($aux[$i])."</strong><br>";
-									echo "<span id='tituloAccPerf'>".constant($aux[$i].$aux[$i+1])."</span><br>";
+									if (defined($aux[$i])) {
+										echo "<strong >".constant($aux[$i])."</strong><br>";
+									}else{
+										echo "<strong >".$aux[$i]."</strong><br>";
+									}
+									
+									if (defined($aux[$i].$aux[$i+1])) {
+										echo "<span id='tituloAccPerf'>".constant($aux[$i].$aux[$i+1])."</span><br>";
+									}else{
+										echo "<span id='tituloAccPerf'>".$aux[$i+1]."</span><br>";
+									}
+									
+
 									array_push($controladores, $aux[$i]);
 								}else{
-									echo "<span id='tituloAccPerf'>".constant($aux[$i].$aux[$i+1])."</span><br>";
+									if (defined($aux[$i].$aux[$i+1])) {
+										echo "<span id='tituloAccPerf'>".constant($aux[$i].$aux[$i+1])."</span><br>";
+									}else{
+										echo "<span id='tituloAccPerf'>".$aux[$i+1]."</span><br>";
+									}
 								}
 								
 							}
@@ -78,6 +111,11 @@ include('../../Interfaz/Cabecera.php');
 						</tr>			    
                  </tbody>
             </table>
+            <?php
+}else{
+	echo '<h1 class="form-signin-heading ">'.ERR_PERM.'</h1>';
+}
+?>
 		</div>
 		
 		</body>

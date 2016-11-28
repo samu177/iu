@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -30,17 +36,20 @@ include('../../Interfaz/Cabecera.php');
 			<fieldset>
 			<!-- Form Name -->
 			
-				<legend>Consultar controladores</legend>
+				<legend><?=TITULO_SELECT_CONTROLLER?></legend>
 				
 
 				<!-- Text input-->
 			
-				  <label class="col-xs-1 control-label" for="bcont">Filtrar:</label>  
+				  <label class="col-xs-1 control-label" for="bcont"><?=FILTER?></label>  
 				  <div class="col-xs-3">
 				  <input id="bcont" name="bcont" type="text" placeholder="" class="form-control input-xs" >
 				  </div>
 				  <div class="col-xs-1" id="ConsultarUsrButtons">
-				   <input type="submit" name="acc" value="Buscar" class="btn">
+				   <?php
+				   echo '<input type="hidden" name="acc" value="Buscar" >';
+			   	   echo '<input type="submit" value="'.BUSCAR.'" class="btn">';
+				   ?>
 				  </div>
 				
 			</fieldset>
@@ -52,7 +61,7 @@ include('../../Interfaz/Cabecera.php');
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'>Controlador</th>
+                        <th id='textoConsultUser'><?=LABEL_CONTROLLERS?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
@@ -64,7 +73,12 @@ include('../../Interfaz/Cabecera.php');
 											 	?>
 											  <tr>
 											  	<?php  
-											  	echo "<td id='textoConsultUserxt'>".constant($ax[$i])."</td>";
+											  	if (defined($ax[$i])) {
+											  		echo "<td id='textoConsultUserxt'>".constant($ax[$i])."</td>";
+											  	}else{
+											  		echo "<td id='textoConsultUserxt'>".$ax[$i]."</td>";
+											  	}
+											  	
 											  	?>
 											  	<td align="center" >
 											  	<?php

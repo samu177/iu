@@ -1,6 +1,11 @@
-
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -26,21 +31,21 @@ include('../../Interfaz/Cabecera.php');
 
 <div class="col-xs-8"><!-- col8 -->
 
-	<form onsubmit="return comprobarDatosCont()" action="../../Controllers/ACCIONES_Controller.php" method="POST">
+	<form  action="../../Controllers/ACCIONES_Controller.php" method="POST">
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>Crear accion</legend>
+			<legend><?=TITULO_ADD_ACTION?></legend>
 			
 
 			<!-- Text input-->
 			
-		  <label class="col-xs-4 control-label" for="usr">Accion</label>  
+		  <label class="col-xs-4 control-label" for="usr"><?=LABEL_ACTION?></label>  
 		  <div class="col-xs-6">
 		  <input type="text" name="anomb" placeholder="" class="form-control input-md" required>
 		  </div>
 			
-			<label class="col-xs-4 control-label" for="usr">Controladores</label>  
+			<label class="col-xs-4 control-label" for="usr"><?=LABEL_CONTROLLERS?></label>  
 			  <div class="col-xs-6 ">
 			  <?php
 				$mostacc=$_SESSION['controladores'];
@@ -50,7 +55,11 @@ include('../../Interfaz/Cabecera.php');
 					if($cont==0){
 						$au.= "checked='checked'";
 					}
-					$au.=">".constant($value);
+					if(defined($value)){
+						$au.=">".constant($value);
+					}else{
+						$au.=">".$value;
+					}
 					echo $au.'</label>';
 					$cont++;
 				}
@@ -61,8 +70,10 @@ include('../../Interfaz/Cabecera.php');
 			
 			  <label class="col-xs-4 control-label" for="singlebutton" ></label>
 			  <div class="col-xs-4" id="CrearUsrButtons">
-			   <input type="submit" name="acc" value="Insertar" class="btn">
-			   <input type="reset" value="Limpiar" class="btn" id="resetUsrAdd">
+			   <?php
+			   echo '<input type="hidden" name="acc" value="Insertar" >';
+			   echo '<input type="submit" value="'.ADD.'" class="btn">';
+			   ?>
 			  </div>
 			
 		</fieldset>

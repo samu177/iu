@@ -1,6 +1,11 @@
-
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -30,22 +35,24 @@ include('../../Interfaz/Cabecera.php');
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>Crear controlador</legend>
+			<legend><?=TITULO_ADD_CONTROLLER?></legend>
 			
 
 			<!-- Text input-->
 			
-			  <label class="col-xs-4 control-label" for="usr">Usuario</label>  
+			  <label class="col-xs-4 control-label" for="usr"><?=LABEL_NAME?></label>  
 			  <div class="col-xs-6">
-			  <input type="text" name="cnomb" placeholder="GEST_#############" class="form-control input-md" onblur="comprobarNombreCont(this)" required>
+			  <input type="text" name="cnomb" placeholder="" class="form-control input-md" required>
 			  </div>
 			
 
 			
 			  <label class="col-xs-4 control-label" for="singlebutton" ></label>
 			  <div class="col-xs-4" id="CrearUsrButtons">
-			   <input type="submit" name="acc" value="Insertar" class="btn">
-			   <input type="reset" value="Limpiar" class="btn" id="resetUsrAdd">
+			  <?php
+			   echo '<input type="hidden" name="acc" value="Insertar" >';
+			   echo '<input type="submit" value="'.ADD.'" class="btn">';
+			   ?>
 			  </div>
 			
 		</fieldset>

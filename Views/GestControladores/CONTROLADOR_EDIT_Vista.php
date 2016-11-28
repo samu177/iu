@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -27,12 +33,24 @@ $am= $_GET['cnomb'];
 </div>
 
 <div class="col-xs-8"><!-- col8 -->
+<?php
+
+	$comp=$_SESSION["autorizacion"];
+	$aceptado=false;
+	for ($i=0; $i < sizeof($comp); $i+=2){
+		$cadena=$comp[$i].$comp[$i+1];
+		if($cadena=="GEST_CONTREDIT"){
+			$aceptado=true;
+		}
+	}
+	if($aceptado){
+		?>
 
 <div>
 		<fieldset>
 		<!-- Form Name -->
 			<div class="form-group">
-			<legend>Editar controlador</legend>
+			<legend><?=TITULO_EDIT_CONTROLLER?></legend>
 			</div>
 		</fieldset>
 		
@@ -45,7 +63,7 @@ $am= $_GET['cnomb'];
 		<fieldset>
 			<!-- Text input-->
 			
-			  <label class="col-xs-4 control-label" for="usr">Controlador</label>  
+			  <label class="col-xs-4 control-label" for="usr"><?=LABEL_CONTROLLER?></label>  
 			  <div class="col-xs-6">
 			  <input type="text" readonly="readonly" name="cnomb" class="form-control input-md"  value="<?php  echo $a; ?>">
 			  </div>
@@ -53,7 +71,7 @@ $am= $_GET['cnomb'];
 
 			<!-- Text input-->
 			
-			  <label class="col-xs-4 control-label" for="usr">Acciones</label>  
+			  <label class="col-xs-4 control-label" for="usr"><?=LABEL_ACTIONS?></label>  
 			  <div class="col-xs-6 ">
 			  <?php
 				$mostper=$_SESSION['acciones'];
@@ -75,11 +93,18 @@ $am= $_GET['cnomb'];
 		
 			  <label class="col-xs-4 control-label" for="singlebutton" ></label>
 			  <div class="col-xs-4" id="CrearUsrButtons">
-			   <input type="submit" name="acc" value="Modificar!" class="btn">
-			   <input type="reset" value="Limpiar" class="btn" id="resetUsrAdd">
+			    <?php
+			   echo '<input type="hidden" name="acc" value="Modificar" >';
+			   echo '<input type="submit" value="'.MODIFICAR.'" class="btn" >';
+			   ?>
 			  </div>
 			
 		</fieldset>
+		<?php
+}else{
+	echo '<h1 class="form-signin-heading ">'.ERR_PERM.'</h1>';
+}
+?>
 	</form>
 
 

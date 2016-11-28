@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+}
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -29,32 +35,36 @@ include('../../Interfaz/Cabecera.php');
 		<fieldset>
 		<!-- Form Name -->
 			<div class="form-group">
-			<legend><?=ADD_USER?></legend>
+			<legend><?=TITULO_ADD_USER?></legend>
 			</div>
 
 			<!-- Text input-->
 		
-			  <label class="col-xs-4 control-label" for="usr">Usuario</label>  
+			  <label class="col-xs-4 control-label" for="usr"><?=LABEL_USER?></label>  
 			  <div class="col-xs-6">
-			  <input id="usr" name="usr" type="text" placeholder="Introduce usuario" class="form-control input-md" onBlur="comprobarUsuario(this)" required="">
+			  <?php
+			  echo '<input id="usr" name="usr" type="text" placeholder="'.CAMPO_USER_USER.'" class="form-control input-md" onBlur="comprobarUsuario(this)" required="">';
+			  ?>
 			  </div>
 			
 
 			<!-- Text input-->
 		
-			  <label class="col-xs-4 control-label" for="password1">Contraseña</label>  
+			  <label class="col-xs-4 control-label" for="password1"><?=PASS_ADD_USER?></label>  
 			  <div class="col-xs-6">
-			  <input id="password1" name="password1" type="password" placeholder="Introduce contraseña" class="form-control input-md" onBlur="comprobarContraseña(this)" required="">
-			    
+			  <?php
+			  echo '<input id="password1" name="password1" type="password" placeholder="'.CAMPO_USER_PASS.'" class="form-control input-md" onBlur="comprobarContraseña(this)" required="">';
+			   ?>
 			  </div>
 			
 
 			<!-- Text input-->
 			
-			  <label class="col-xs-4 control-label" for="password2">Repite Contraseña</label>  
+			  <label class="col-xs-4 control-label" for="password2"><?=REPASS_ADD_USER?></label>  
 			  <div class="col-xs-6">
-			  <input id="password2" name="password2" type="password" placeholder="Vuelva a introducir contraseña" class="form-control input-md" onBlur="comprobarIgualdad()" required="">
-			    
+			  <?php
+			  echo '<input id="password2" name="password2" type="password" placeholder="'.CAMPO_USER_REPASS.'" class="form-control input-md" onBlur="comprobarIgualdad()" required="">';
+			   ?>
 			  </div>
 			
 
@@ -62,13 +72,14 @@ include('../../Interfaz/Cabecera.php');
 			
 			  <label class="col-xs-4 control-label" for="dni">DNI</label>  
 			  <div class="col-xs-6">
-			  <input id="dni" name="dni" type="text" placeholder="Introduce DNI" class="form-control input-md"  onBlur="comprobarDNI(this)" required="">
-			    
+			  <?php
+			  echo '<input id="dni" name="dni" type="text" placeholder="'.CAMPO_USER_DNI.'" class="form-control input-md"  onBlur="comprobarDNI(this)" required="">';
+			   ?>
 			  </div>
 			
 			<!-- Select Basic -->
 		
-			  <label class="col-xs-4 control-label" for="perfil">Perfil</label>
+			  <label class="col-xs-4 control-label" for="perfil"><?=LABEL_PROFILE?></label>
 			  <div class="col-xs-6">
 			    <select id="perfil" name="perfil" class="form-control" required="">
 			        					<?php
@@ -85,8 +96,11 @@ include('../../Interfaz/Cabecera.php');
 			
 			  <label class="col-xs-4 control-label" for="singlebutton" ></label>
 			  <div class="col-xs-4" id="CrearUsrButtons">
-			   <input type="submit" name="acc" value="Insertar" class="btn">
-			   <input type="reset" value="Limpiar" class="btn" id="resetUsrAdd">
+			  <?php
+			   echo '<input type="hidden" name="acc" value="Insertar" >';
+			   echo '<input type="submit" value="'.ADD.'" class="btn">';
+			   //echo '<input type="reset" value="'.LIMPIAR.'" class="btn" id="resetUsrAdd">';
+			   ?>
 			  </div>
 			
 		</fieldset>

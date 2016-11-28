@@ -11,70 +11,74 @@
 	}
 	$idioma=$_SESSION['idioma'];
 	include("../../Assets/languages/".$idioma.".php");
-	include '../Models/PERFIL_Model.php';
+	include '../Models/CLIEXT_Model.php';
+
 	
 	
 	$acc = (isset($_REQUEST['acc']) ? $_REQUEST['acc'] : "");
 
-	$perf = (isset($_REQUEST['perfil']) ? $_REQUEST['perfil']:"");
-	$perfM = (isset($_REQUEST['perfilM']) ? $_REQUEST['perfilM']:"");
-	$perfA = (isset($_REQUEST['perfilA']) ? $_REQUEST['perfilA']:"");
-	$_SESSION['perfilAntiguo']=$perfA;
+	$usr=(isset($_REQUEST['nom']) ? $_REQUEST['nom']:"");
+	$pass = (isset($_REQUEST['password1']) ? $_REQUEST['password1']:"");
+	
 
-	$bperf = (isset($_REQUEST['bperf']) ? $_REQUEST['bperf'] : "");
-
-	$accion = (isset($_REQUEST['accion']) ? $_REQUEST['accion'] : "");
-	$_SESSION['accionInsert']=$accion;
-	$controlador = (isset($_REQUEST['controlador']) ? $_REQUEST['controlador'] : "");
+	$busr = (isset($_REQUEST['busr']) ? $_REQUEST['busr'] : "");
+	
+	
 
 
 
 	switch ($acc) {
 
 		case 'Insertar': 
-						if($perf <> ''){
-							$temp = new Perfil($perf);
+						if($usr <> ''){
+							$temp = new CliExt($usr,$pass,$dni,$perf);
 							$_SESSION['mensaje']=$temp->insertar();
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}else{
-							$temp = new Perfil($perf);
-							$temp->protoinsertar();
-							header("Location: ../Views/GestPerfil/PERFIL_ADD_Vista.php");
+							header("Location: ../Views/GestCliExt/CLIEXT_ADD_Vista.php");
 						}
 						
 			break;
-		case '¿Borrar?': 
-						$temp = new Perfil($perf);
+		/*case '¿Borrar?': 
+						$temp = new User($usr,$pass,$dni,$perf);
 						$me = $temp->protoborrar();
 						if($me<>''){
 						$_SESSION['mensaje']=$me;
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
+						}elseif($usr==$_SESSION['user']){
+							$_SESSION['mensaje']='DONT_DELETE_USR_OWN';
+							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
+						}elseif($usr=="admin"){
+							$_SESSION['mensaje']='DONT_DELETE_USR_ADMIN';
+							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}else{
-							header("Location: ../Views/GestPerfil/PERFIL_DELETE_Vista.php?perfil=$perf");
+							header("Location: ../Views/GestCliExt/CLIEXT_DELETE_Vista.php?usr=$usr");
 						}
+						
+						
 						break;
 
-		case 'Borrar': 	$temp = new Perfil($perf);
+		case 'Borrar': $temp = new User($usr,$pass,$dni,$perf);
 						$_SESSION['mensaje']=$temp->borrar();
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 
 			break;
-		case 'Consultar':$temp = new Perfil($perf);
-						 $_SESSION['contraccShow']=$temp->buscarControladoresAcciones();
-						 header("Location: ../Views/GestPerfil/PERFIL_SHOW_Vista.php?perfil=$perf");
+		case 'Consultar': $temp = new User($usr,"",$dni,$perf);
+						 $_SESSION['consulta']=$temp->ConsultarU();
+						 header("Location: ../Views/GestCliExt/CLIEXT_SHOW_Vista.php?usr=$usr");
 			break;
 		case 'Modificar':
-						if($perf<>''){
-							$temp = new Perfil($perf);
+						if($perf==''){
+							$temp = new User($usr,$pass,$dni,$perf);
 							$auxMod=$temp->protomodificar();
 							if($auxMod <> ''){
 								$_SESSION['mensaje']=$auxMod;
 								header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 							}else{
-								header("Location: ../Views/GestPerfil/PERFIL_EDIT_Vista.php?perfil=$perf");
+								header("Location: ../Views/GestCliExt/CLIEXT_EDIT_Vista.php?usr=$usr");
 							}
 						}else{
-							$temp = new Perfil($perfM);
+							$temp = new User($usr,$pass,$dni,$perf);
 							$_SESSION['mensaje']=$temp->modificar();
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}
@@ -82,15 +86,15 @@
 		case 'Buscar':
 			
 			$aux=array();
-			$aux=listarPerfiles($bperf);
+			$aux=buscarUsuarios($busr);
 			$_SESSION['busq']=$aux;
-			 header("Location:../Views/GestPerfil/PERFIL_LIST_Vista.php");			
+			 header("Location:../Views/GestCliExt/CLIEXT_LIST_Vista.php");			
 			break;
 		default:
 			
 			$aux=array();
-			$aux=listarPerfiles($bperf);
+			$aux=buscarUsuarios($busr);
 			$_SESSION['busq']=$aux;
-			 header("Location:../Views/GestPerfil/PERFIL_LIST_Vista.php");			
-			break;
+			 header("Location:../Views/GestCliExt/CLIEXT_LIST_Vista.php");			
+			break;*/
 	}

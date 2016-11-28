@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -30,11 +36,23 @@ $cnomb=$_GET['cnomb'];
 </div>
 
 <div class="col-xs-8"><!-- 8 -->
+<?php
+
+	$comp=$_SESSION["autorizacion"];
+	$aceptado=false;
+	for ($i=0; $i < sizeof($comp); $i+=2){
+		$cadena=$comp[$i].$comp[$i+1];
+		if($cadena=="GEST_ACIONCONTRSHOW"){
+			$aceptado=true;
+		}
+	}
+	if($aceptado){
+		?>
 	<div>
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>Mostrar accion</legend>
+			<legend><?=TITULO_SHOW_ACTION?></legend>
 			
 		</fieldset>
 		
@@ -43,8 +61,8 @@ $cnomb=$_GET['cnomb'];
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'>Accion</th>
-                        <th id='textoConsultUser'>Controlador</th>
+                        <th id='textoConsultUser'><?=LABEL_ACTION?></th>
+                        <th id='textoConsultUser'><?=LABEL_CONTROLLER?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
@@ -53,9 +71,19 @@ $cnomb=$_GET['cnomb'];
 		                	$con=$_SESSION['consulta'];
 						?>
 						<tr>
-						  	<?php  
-						  	echo "<td id='textoConsultUserxt' align='center'>".constant($con[1].$con[0])."</td>";
-						  	echo "<td id='textoConsultUserxt' align='center'>".constant($con[1])."</td>";
+						  	<?php 
+						  	if (defined($con[1].$con[0])) {
+						  		echo "<td id='textoConsultUserxt' align='center'>".constant($con[1].$con[0])."</td>";
+						  		
+						  	}else{
+						  		echo "<td id='textoConsultUserxt' align='center'>".$con[0]."</td>";
+						  	}
+						  	if (defined($con[1])){
+						  		echo "<td id='textoConsultUserxt' align='center'>".constant($con[1])."</td>";
+						  		
+						  	}else{
+						  		echo "<td id='textoConsultUserxt' align='center'>".$con[1]."</td>";
+						  	} 
 
 						  	?>
 						  	<td align="center" >
@@ -67,6 +95,11 @@ $cnomb=$_GET['cnomb'];
 						</tr>			    
                  </tbody>
             </table>
+            <?php
+}else{
+	echo '<h1 class="form-signin-heading ">'.ERR_PERM.'</h1>';
+}
+?>
 		</div>
 		
 		</body>
