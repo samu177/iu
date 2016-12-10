@@ -17,11 +17,14 @@
 	
 	$acc = (isset($_REQUEST['acc']) ? $_REQUEST['acc'] : "");
 
-	$usr=(isset($_REQUEST['nom']) ? $_REQUEST['nom']:"");
-	$pass = (isset($_REQUEST['password1']) ? $_REQUEST['password1']:"");
+	$nom=(isset($_REQUEST['nom']) ? $_REQUEST['nom']:"");
+	$email = (isset($_REQUEST['email']) ? $_REQUEST['email']:"");
+	$dni = (isset($_REQUEST['dni']) ? $_REQUEST['dni']:"");
+
+	$dniMod = (isset($_REQUEST['dniMod']) ? $_REQUEST['dniMod']:"");
 	
 
-	$busr = (isset($_REQUEST['busr']) ? $_REQUEST['busr'] : "");
+	$bnom = (isset($_REQUEST['bnom']) ? $_REQUEST['bnom'] : "");
 	
 	
 
@@ -30,8 +33,8 @@
 	switch ($acc) {
 
 		case 'Insertar': 
-						if($usr <> ''){
-							$temp = new CliExt($usr,$pass,$dni,$perf);
+						if($nom <> ''){
+							$temp = new CliExt($email,$dni,$nom);
 							$_SESSION['mensaje']=$temp->insertar();
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}else{
@@ -39,62 +42,46 @@
 						}
 						
 			break;
-		/*case '¿Borrar?': 
-						$temp = new User($usr,$pass,$dni,$perf);
-						$me = $temp->protoborrar();
-						if($me<>''){
-						$_SESSION['mensaje']=$me;
-						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
-						}elseif($usr==$_SESSION['user']){
-							$_SESSION['mensaje']='DONT_DELETE_USR_OWN';
-							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
-						}elseif($usr=="admin"){
-							$_SESSION['mensaje']='DONT_DELETE_USR_ADMIN';
-							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
-						}else{
-							header("Location: ../Views/GestCliExt/CLIEXT_DELETE_Vista.php?usr=$usr");
-						}
-						
-						
-						break;
+		case '¿Borrar?': $temp = new CliExt($email,$dni,$nom);
+						$_SESSION['consulta']=$temp->ConsultarCliExt();
+						 header("Location: ../Views/GestCliExt/CLIEXT_DELETE_Vista.php?dni=$dni");
+			break;
 
-		case 'Borrar': $temp = new User($usr,$pass,$dni,$perf);
+		case 'Borrar': $temp = new CliExt($email,$dni,$nom);
 						$_SESSION['mensaje']=$temp->borrar();
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 
 			break;
-		case 'Consultar': $temp = new User($usr,"",$dni,$perf);
-						 $_SESSION['consulta']=$temp->ConsultarU();
-						 header("Location: ../Views/GestCliExt/CLIEXT_SHOW_Vista.php?usr=$usr");
+		case 'Consultar': $temp = new CliExt($email,$dni,$nom);
+						 $_SESSION['consulta']=$temp->ConsultarCliExt();
+						 header("Location: ../Views/GestCliExt/CLIEXT_SHOW_Vista.php?dni=$dni");
 			break;
 		case 'Modificar':
-						if($perf==''){
-							$temp = new User($usr,$pass,$dni,$perf);
+						if($dniMod==''){
+							$temp = new CliExt($email,$dni,$nom);
 							$auxMod=$temp->protomodificar();
 							if($auxMod <> ''){
 								$_SESSION['mensaje']=$auxMod;
 								header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 							}else{
-								header("Location: ../Views/GestCliExt/CLIEXT_EDIT_Vista.php?usr=$usr");
+								header("Location: ../Views/GestCliExt/CLIEXT_EDIT_Vista.php?dni=$dni");
 							}
 						}else{
-							$temp = new User($usr,$pass,$dni,$perf);
+							$temp = new CliExt($email,$dniMod,$nom);
 							$_SESSION['mensaje']=$temp->modificar();
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}
 			break; 
 		case 'Buscar':
-			
 			$aux=array();
-			$aux=buscarUsuarios($busr);
+			$aux=buscarClientesExternos($bnom);
 			$_SESSION['busq']=$aux;
 			 header("Location:../Views/GestCliExt/CLIEXT_LIST_Vista.php");			
 			break;
 		default:
-			
 			$aux=array();
-			$aux=buscarUsuarios($busr);
+			$aux=buscarClientesExternos($bnom);
 			$_SESSION['busq']=$aux;
 			 header("Location:../Views/GestCliExt/CLIEXT_LIST_Vista.php");			
-			break;*/
+			break;
 	}
