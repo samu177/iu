@@ -35,24 +35,24 @@ include('../../Interfaz/Cabecera.php');
 		<fieldset>
 		<!-- Form Name -->
 			<div class="form-group">
-			<legend><?=TITULO_ADD_USER?></legend>
+			<legend><?=TITULO_ADD_CLIEXT?></legend>
 			</div>
 
 			<!-- Text input-->
 		
-			  <label class="col-xs-4 control-label" for="nom"><?=LABEL_USER?></label>  
+			  <label class="col-xs-4 control-label" for="nom"><?=LABEL_NAME?></label>  
 			  <div class="col-xs-6">
 			  <?php
-			  echo '<input id="nom" name="nom" type="text" placeholder="'.CAMPO_USER_USER.'" class="form-control input-md" required="">';
+			  echo '<input id="nom" name="nom" type="text" placeholder="'.CAMPO_PROFILE_NAME.'" class="form-control input-md" required="">';
 			  ?>
 			  </div>
 
 			  <!-- Text input-->
 		
-			  <label class="col-xs-4 control-label" for="email"><?=LABEL_USER?></label>  
+			  <label class="col-xs-4 control-label" for="email"><?=LABEL_EMAIL?></label>  
 			  <div class="col-xs-6">
 			  <?php
-			  echo '<input id="email" name="email" type="email" placeholder="'.CAMPO_USER_USER.'" class="form-control input-md" required="">';
+			  echo '<input id="email" name="email" type="email" placeholder="'.CAMPO_CLIEXT_EMAIL.'" class="form-control input-md" required="">';
 			  ?>
 			  </div>
 

@@ -1,19 +1,19 @@
 <?php
    
 
-	class HORARIO_View{
+	class CALENDARIO_View{
 
-    private $datos; 
+    private $datosCalendario=array(); 
     private $horario=array();
     private $inicio;
 
    
     
 
-    function __construct($horario,$inicio){
+    function __construct($horario,$inicio,$datosCalendario){
       $this->horario = $horario;
       $this->inicio = $inicio;
-      
+      $this->datosCalendario = $datosCalendario;
       
     }
 		
@@ -53,7 +53,7 @@ include("../Assets/languages/".$idioma.".php");
             <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
               
                 <div class="navbar-header" id="logo">
-                  <a class="navbar-brand" href="../Controllers/HORARIO_Controller.php"><?=LOGO?></a>
+                  <a class="navbar-brand" href="../Controllers/CALENDARIO_Controller.php"><?=LOGO?></a>
                 </div>
                 
                 <div class="btn-group" id="options">
@@ -66,8 +66,8 @@ include("../Assets/languages/".$idioma.".php");
         <ul class="dropdown-menu" role="menu" id="contBandera">
                     <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
                     <li id="idioma"><?=IDIOMA?>: </li>
-                    <li class="contBandera"><a href="../Controllers/HORARIO_Controller.php?idioma=esp"><IMG SRC="../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
-                    <li class="contBandera"><a href="../Controllers/HORARIO_Controller.php?idioma=eng"><IMG SRC="../Assets/img/buk.gif" class="bandera"> Eng </a></li>
+                    <li class="contBandera"><a href="../Controllers/CALENDARIO_Controller.php?idioma=esp"><IMG SRC="../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
+                    <li class="contBandera"><a href="../Controllers/CALENDARIO_Controller.php?idioma=eng"><IMG SRC="../Assets/img/buk.gif" class="bandera"> Eng </a></li>
                   </ul>
                 </div>
               </div><!-- /Header -->
@@ -103,16 +103,16 @@ include("../Assets/languages/".$idioma.".php");
                 <div id="'.$acciones[$i].'" class="panel-collapse collapse">
                   <ul class="list-group">';
             if (defined($acciones[$i].$acciones[$i+1])) {
-              echo "<li class='list-group-item'><a href='../Controllers/HORARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".constant($acciones[$i].$acciones[$i+1])."</a></li>";
+              echo "<li class='list-group-item'><a href='../Controllers/CALENDARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".constant($acciones[$i].$acciones[$i+1])."</a></li>";
             }else{
-              echo "<li class='list-group-item'><a href='../Controllers/HORARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".$acciones[$i+1]."</a></li>";
+              echo "<li class='list-group-item'><a href='../Controllers/CALENDARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".$acciones[$i+1]."</a></li>";
             }
             array_push($controladores, $acciones[$i]);
         }else{
             if (defined($acciones[$i].$acciones[$i+1])) {
-              echo "<li class='list-group-item'><a href='../Controllers/HORARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".constant($acciones[$i].$acciones[$i+1])."</a></li>";
+              echo "<li class='list-group-item'><a href='../Controllers/CALENDARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".constant($acciones[$i].$acciones[$i+1])."</a></li>";
             }else{
-              echo "<li class='list-group-item'><a href='../Controllers/HORARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".$acciones[$i+1]."</a></li>";
+              echo "<li class='list-group-item'><a href='../Controllers/CALENDARIO_Controller.php?action=".$acciones[$i].$acciones[$i+1]."' id='optionsBarrIzq'>".$acciones[$i+1]."</a></li>";
             }
               
             
@@ -137,9 +137,9 @@ include("../Assets/languages/".$idioma.".php");
                     
                   <div class="col-xs-8"> <!-- div de muestra de datos.... titulos y datos --> 
                         
-                        <form action="../Controllers/HORARIO_Controller.php" method="GET" class="divAntSig">
-                        <input class="ant btn" type="submit" name="acc" value="<">
-                        <input class="sig btn" type="submit" name="acc" value=">">
+                        <form action="../Controllers/CALENDARIO_Controller.php" method="GET" class="divAntSig">
+                        <input class="ant btn" type="submit" name="action" value="<">
+                        <input class="sig btn" type="submit" name="action" value=">">
                         <input type="hidden" name="var" value="<?php echo $this->inicio ?>">
                         </form>
 
@@ -153,13 +153,16 @@ include("../Assets/languages/".$idioma.".php");
                             <tr>
 
                               <td align='center' class="ColIzq">
-                                <form action="../Controllers/HORARIO_Controller.php" method="GET">
-                                  <input class="select btn " type="submit" name="Select" value=<?=SELEC?>>
+                                <form action="../Controllers/CALENDARIO_Controller.php" method="GET">
+                                  <input class="select btn " type="submit" name="action" value=<?=ACTIV?>>
+                                  <input class="select btn " type="submit" name="action" value=<?=SALAS?>>
+                                  <input type="hidden" name="var" value="<?php echo $this->inicio ?>">
                                 </form>
                               </td>
 
                               <?php
                                  $cont =0;
+                                 $dias = 0;
                                  foreach($titulos as $titulo){
                               ?>
 
@@ -189,24 +192,28 @@ include("../Assets/languages/".$idioma.".php");
                                 ?>
                               </td>
 
-                              <?php
-                                for($i=0;$i<7;$i++){
-                                //foreach($datos as $dato){
-
-                              ?>
-
-                              <td >
                                 <?php
-                                    //echo $dato['2'];
+                                foreach ($this->datosCalendario as $key ) {
+                                  echo "<td >";
+                                  for ($z=0; $z < (count($key)); $z+=6) {
+                                    $comp = $key[$z+3]."-".$key[$z+4];
+                                    if($comp == $this->horario[$cont]){
+                                      if($_SESSION["calendario"]=="Actividades"){
+                                        if(isset($key[$z])){
+                                          echo "<a id='colorRefCalendario' href='../Controllers/CALENDARIO_Controller.php?action=Consultar&activ=".$key[$z+5]."&hini=".$key[$z+3]."&hfin=".$key[$z+4]."'>".$key[$z]."</a><br>";
+                                        }
+                                      }elseif($_SESSION["calendario"]=="Salas"){
+                                        if(isset($key[$z])){
+                                          echo $key[$z+1]."<br>";
+                                        }
+                                      }
+                                    }
+                                  }//for
+                                  echo "</td>";
+                                }//foreach
+                                
                                 ?>
-                              </td>
-
-                              <?php
-                                }
-                              ?>
-
                             </tr>
-
                             <?php
                                 $cont++;
                               }
@@ -219,6 +226,7 @@ include("../Assets/languages/".$idioma.".php");
                     
                       <?php
                       include('../Interfaz/BarraInferior.php');
+                      
                       ?>
                     </div> <!-- fin de div de muestra de datos -->
                     <div class="col-xs-1">
@@ -286,66 +294,14 @@ include("../Assets/languages/".$idioma.".php");
 
     //jddayofweek(jd,mode)
 
-    function inicioSem($valor){
-      $diarecibido =$valor;
-
-      $diasemana = strtotime($diarecibido);
-
-      switch (date('w', $diasemana)){
-
-        case 0: $titleday ="Domingo"; $menos=6;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        case 1: $titleday ="Lunes"; $menos=1;
-
-          $iniciosemana = $diarecibido;
-
-          break;
-
-        case 2: $titleday ="Martes"; $menos=1;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        case 3: $titleday ="Miercoles"; $menos=2;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        case 4: $titleday ="Jueves"; $menos=3;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        case 5: $titleday ="Viernes"; $menos=4;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        case 6: $titleday ="Sabado"; $menos=5;
-
-          $iniciosemana = date("Y-m-d", strtotime("$diarecibido -$menos day"));
-
-          break;
-
-        }
-      return $iniciosemana;
-    }
-
+    
 
     function titulos($valor){
       $leRet = array();
 
       for($i=0; $i<7; $i++){
-        $iniciosemana = $this->inicioSem($valor);
-        $mostrable =date("Y-m-d", strtotime("$iniciosemana +$i day"));
+        $iniciosemana = inicioSem($valor);
+        $mostrable =date("Y/m/d", strtotime("$iniciosemana +$i day"));
 
         $titleday=$this->mesydia($mostrable);
 
