@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -30,17 +36,20 @@ include('../../Interfaz/Cabecera.php');
 			<fieldset>
 			<!-- Form Name -->
 			
-				<legend>Consultar usuarios</legend>
+				<legend><?=TITULO_SELECT_USER?></legend>
 				
 
 				<!-- Text input-->
 				
-				  <label class="col-xs-1 control-label" for="busr">Filtrar:</label>  
+				  <label class="col-xs-1 control-label" for="busr"><?=FILTER?></label>  
 				  <div class="col-xs-3">
 				  <input id="busr" name="busr" type="text" placeholder="" class="form-control input-xs" >
 				  </div>
 				  <div class="col-xs-1" id="ConsultarUsrButtons">
-				   <input type="submit" name="acc" value="Buscar" class="btn">
+				  <?php
+				   echo '<input type="hidden" name="acc" value="Buscar" >';
+			   	   echo '<input type="submit" value="'.BUSCAR.'" class="btn">';
+				   ?>
 				  </div>
 				
 			</fieldset>
@@ -52,9 +61,9 @@ include('../../Interfaz/Cabecera.php');
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'>Nombre</th>
+                        <th id='textoConsultUser'><?=LABEL_NAME?></th>
                         <th id='textoConsultUser'>Dni</th>
-                        <th id='textoConsultUser'>Perfil</th>
+                        <th id='textoConsultUser'><?=LABEL_PROFILE?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>

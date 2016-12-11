@@ -14,8 +14,8 @@ include('../../Interfaz/Cabecera.php');
 <ul class="dropdown-menu" role="menu" id="contBandera">
             <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
             <li id="idioma"><?=IDIOMA?>: </li>
-            <li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=esp&acc=Buscar"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
-            <li class="contBandera"><a href="../../Controllers/ACCIONES_Controller.php?idioma=eng&acc=Buscar"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>
+            <li class="contBandera"><a href="../../Controllers/CLIEXT_Controller.php?idioma=esp&acc=Buscar"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
+            <li class="contBandera"><a href="../../Controllers/CLIEXT_Controller.php?idioma=eng&acc=Buscar"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>
           </ul>
         </div>
           
@@ -32,21 +32,21 @@ include('../../Interfaz/Cabecera.php');
 
 <div class="col-xs-8"><!-- 8 -->
 	<div>
-		<form action="../../Controllers/ACCIONES_Controller.php" method="POST">
+		<form action="../../Controllers/CLIEXT_Controller.php" method="POST">
 			<fieldset>
 			<!-- Form Name -->
 			
-				<legend><?=TITULO_SELECT_ACTION?></legend>
+				<legend><?=TITULO_SELECT_CLIEXT?></legend>
 				
 
 				<!-- Text input-->
-			
-				  <label class="col-xs-1 control-label" for="bacc"><?=FILTER?></label>  
+				
+				  <label class="col-xs-1 control-label" for="bnom"><?=FILTER?></label>  
 				  <div class="col-xs-3">
-				  <input id="bacc" name="bacc" type="text" placeholder="" class="form-control input-xs" >
+				  <input id="bnom" name="bnom" type="text" placeholder="" class="form-control input-xs" >
 				  </div>
 				  <div class="col-xs-1" id="ConsultarUsrButtons">
-				   <?php
+				  <?php
 				   echo '<input type="hidden" name="acc" value="Buscar" >';
 			   	   echo '<input type="submit" value="'.BUSCAR.'" class="btn">';
 				   ?>
@@ -61,37 +61,27 @@ include('../../Interfaz/Cabecera.php');
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'><?=LABEL_ACTION?></th>
-                        <th id='textoConsultUser'><?=LABEL_CONTROLLER?></th>
+                        <th id='textoConsultUser'>Dni</th>
+                        <th id='textoConsultUser'><?=LABEL_NAME?></th>
+                        <th id='textoConsultUser'><?=LABEL_EMAIL?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
               	<tbody >
                         <?php
-		                           			$ax=$_SESSION['bacc'];
+		                           			$ax=$_SESSION['busq'];
 
-											for ($i=0; $i < sizeof($ax) ; $i=$i+2) { 
+											for ($i=0; $i < sizeof($ax) ; $i+=3) { 
 											 	?>
 											  <tr>
 											  	<?php  
-											  	if (defined($ax[$i+1].$ax[$i])) {
-											  		echo "<td id='textoConsultUserxt'>".constant($ax[$i+1].$ax[$i])."</td>";
-											  		
-											  	}else{
-											  		echo "<td id='textoConsultUserxt'>".$ax[$i]."</td>";
-											  	}
-											  	if (defined($ax[$i+1])){
-											  		echo "<td id='textoConsultUserxt'>".constant($ax[$i+1])."</td>";
-											  		
-											  	}else{
-											  		echo "<td id='textoConsultUserxt'>".$ax[$i+1]."</td>";
-											  	}
-											  	
-											  		
+											  	echo "<td id='textoConsultUserxt' align='center'>".$ax[$i]."</td>";
+											  	echo "<td id='textoConsultUserxt' align='center'>".$ax[$i+1]."</td>";
+											  	echo "<td id='textoConsultUserxt' align='center'>".$ax[$i+2]."</td>";
 											  	?>
 											  	<td align="center" >
 											  	<?php
-			                            			echo '<a class="btn btn-default glyphicon glyphicon-list-alt" href="../../Controllers/ACCIONES_Controller.php?acc=Consultar&anomb='.$ax[$i].'&cnomb='.$ax[$i+1].'"></em></a>'
+			                            			echo '<a class="btn btn-default glyphicon glyphicon-list-alt" href="../../Controllers/CLIEXT_Controller.php?acc=Consultar&dni='.$ax[$i].'"></em></a>'
 			                            		?>
 			                        			</td>
 											  </tr>

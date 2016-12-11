@@ -10,14 +10,14 @@ if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
 include('../../Interfaz/Cabecera.php');
-$usr= $_GET['usr'];
+$dni= $_GET['dni'];
 ?>
 <ul class="dropdown-menu" role="menu" id="contBandera">
             <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
             <li id="idioma"><?=IDIOMA?>: </li>
             <?php
-            echo '<li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=esp&acc=Consultar&usr='.$usr.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
-            echo '<li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=eng&acc=Consultar&usr='.$usr.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/CLIEXT_Controller.php?idioma=esp&acc=Consultar&dni='.$dni.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/CLIEXT_Controller.php?idioma=eng&acc=Consultar&dni='.$dni.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
             ?>
           </ul>
         </div>
@@ -40,7 +40,7 @@ $usr= $_GET['usr'];
 	$aceptado=false;
 	for ($i=0; $i < sizeof($comp); $i+=2){
 		$cadena=$comp[$i].$comp[$i+1];
-		if($cadena=="GEST_USRSHOW"){
+		if($cadena=="GEST_CLIEXTSHOW"){
 			$aceptado=true;
 		}
 	}
@@ -50,7 +50,7 @@ $usr= $_GET['usr'];
 		<fieldset>
 		<!-- Form Name -->
 		
-			<legend><?=TITULO_SHOW_USER?></legend>
+			<legend><?=TITULO_SHOW_CLIEXT?></legend>
 			
 		</fieldset>
 		
@@ -59,9 +59,9 @@ $usr= $_GET['usr'];
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'><?=LABEL_USER?></th>
                         <th id='textoConsultUser'>Dni</th>
-                        <th id='textoConsultUser'><?=LABEL_PROFILE?></th>
+                        <th id='textoConsultUser'><?=LABEL_NAME?></th>
+                        <th id='textoConsultUser'><?=LABEL_EMAIL?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
@@ -77,8 +77,8 @@ $usr= $_GET['usr'];
 						  	?>
 						  	<td align="center" >
 						  	<?php
-	                			echo '<a class="btn btn-default glyphicon glyphicon-pencil" href="../../Controllers/USER_Controller.php?acc=Modificar&usr='.$aux[0].'"></em></a>';
-	                			echo '<a class="btn btn-default glyphicon glyphicon-trash" href="../../Controllers/USER_Controller.php?acc=¿Borrar?&usr='.$aux[0].'"></em></a>';
+	                			echo '<a class="btn btn-default glyphicon glyphicon-pencil" href="../../Controllers/CLIEXT_Controller.php?acc=Modificar&dni='.$aux[0].'"></em></a>';
+	                			echo '<a class="btn btn-default glyphicon glyphicon-trash" href="../../Controllers/CLIEXT_Controller.php?acc=¿Borrar?&dni='.$aux[0].'"></em></a>';
 	                		?>
 	            			</td>
 						</tr>			    

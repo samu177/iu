@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -25,35 +31,54 @@ include('../../Interfaz/Cabecera.php');
 </div>
 
 <div class="col-xs-8"><!-- calendario -->
-	<form action="../../Controllers/PERFIL_Controller.php" method="POST">
+	<form onsubmit="return comprobarDatosPerfil()" action="../../Controllers/PERFIL_Controller.php" method="POST">
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>Crear perfil</legend>
+			<legend><?=TITULO_ADD_PROFILE?></legend>
 			
 
 			<!-- Text input-->
 			
-			  <label class="col-xs-2 control-label" for="perfil">Nombre</label>  
+			  <label class="col-xs-2 control-label" for="perfil"><?=LABEL_PROFILE?></label>  
 			  <div class="col-xs-6">
-			  <input id="perfil" name="perfil" type="text" placeholder="Introduce nombre" class="form-control input-md" onBlur="comprobarUsuario(this)" required="">
+			  
+			  <?php
+			  echo '<input id="perfil" name="perfil" type="text" placeholder="'.CAMPO_PROFILE_NAME.'" class="form-control input-md" onBlur="comprobarUsuario(this)" required="">';
+			  ?>
 			  </div>
 
 
-		<label class="col-xs-10 control-label" for="nombre" id="cajaContrPerf">Acciones</label> 
+		<label class="col-xs-10 control-label" for="nombre" id="cajaContrPerf"><?=LABEL_ACTIONS?></label> 
 		<div class="col-xs-8" >
 			<ul class="list-group">
 			<?php
 				$aux=$_SESSION['contracc'];
 				$controladores=array();
-				
+
+			
+
 				for ($i=0; $i < sizeof($aux); $i+=2){ 
 					if(!in_array($aux[$i],$controladores)){
-						echo "<li class='list-group-item'><input type='hidden' name='controlador' value='".$aux[$i]."'><strong>".constant($aux[$i])."</strong></li>";
-						echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".constant($aux[$i].$aux[$i+1])."</label></li>";
+						if (defined($aux[$i])) {
+							echo "<li class='list-group-item'><input type='hidden' name='controlador' value='".$aux[$i]."'><strong>".constant($aux[$i])."</strong></li>";
+						}else{
+							echo "<li class='list-group-item'><input type='hidden' name='controlador' value='".$aux[$i]."'><strong>".$aux[$i]."</strong></li>";
+						}
+						if (defined($aux[$i].$aux[$i+1])) {
+							echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".constant($aux[$i].$aux[$i+1])."</label></li>";
+						}else{
+							echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".$aux[$i+1]."</label></li>";
+						}
+						
 						array_push($controladores, $aux[$i]);
 					}else{
-						echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".constant($aux[$i].$aux[$i+1])."</label></li>";
+						
+						if (defined($aux[$i].$aux[$i+1])) {
+							echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".constant($aux[$i].$aux[$i+1])."</label></li>";
+						}else{
+							echo "<li class='list-group-item'><label id='labelPerf'><input type='checkbox' name='accion[]' value='".$aux[$i]."/".$aux[$i+1]."'> ".$aux[$i+1]."</label></li>";
+						}
 					}
 					
 				}
@@ -65,8 +90,11 @@ include('../../Interfaz/Cabecera.php');
 
 
 			  <div class="col-xs-7" id="CrearPerfButtons">
-			   <input type="submit" name="acc" value="Insertar" class="btn">
-			   <input type="reset" value="Limpiar" class="btn" id="resetPerfAdd">
+			   
+			   <?php
+			   echo '<input type="hidden" name="acc" value="Insertar" >';
+			   echo '<input type="submit" value="'.ADD.'" class="btn">';
+			   ?>
 			  </div>
 
 

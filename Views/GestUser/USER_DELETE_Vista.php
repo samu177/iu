@@ -1,15 +1,24 @@
 <?php
 session_start();
+if(!isset($_SESSION['idioma']) ){
+    session_destroy();
+    header("Location: ../../index.php?logout=true");
+  }
+
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
 include('../../Interfaz/Cabecera.php');
+$usr=$_GET['usr'];
 ?>
 <ul class="dropdown-menu" role="menu" id="contBandera">
             <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
             <li id="idioma"><?=IDIOMA?>: </li>
-            <li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=esp&acc=¿Borrar?"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>
-            <li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=eng&acc=¿Borrar?"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>
+            <?php
+            echo '<li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=esp&acc=¿Borrar?&usr='.$usr.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/USER_Controller.php?idioma=eng&acc=¿Borrar?&usr='.$usr.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
+            ?>
           </ul>
         </div>
           
@@ -25,11 +34,23 @@ include('../../Interfaz/Cabecera.php');
 </div>
 
 <div class="col-xs-8"><!-- 8 -->
+<?php
+
+	$comp=$_SESSION["autorizacion"];
+	$aceptado=false;
+	for ($i=0; $i < sizeof($comp); $i+=2){
+		$cadena=$comp[$i].$comp[$i+1];
+		if($cadena=="GEST_USRDELETE"){
+			$aceptado=true;
+		}
+	}
+	if($aceptado){
+		?>
 	<div>
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend>¿Seguro que quieres borrar usuario?</legend>
+			<legend><?=DELETE_USER?></legend>
 			
 		</fieldset>
 		
@@ -38,9 +59,9 @@ include('../../Interfaz/Cabecera.php');
 		<table class="table table-striped table-bordered table-list " id="tablaConsultaUsuarios">
               	<thead>
                     <tr>
-                        <th id='textoConsultUser'>Usuario</th>
+                        <th id='textoConsultUser'><?=LABEL_NAME?></th>
                         <th id='textoConsultUser'>Dni</th>
-                        <th id='textoConsultUser'>Perfil</th>
+                        <th id='textoConsultUser'><?=LABEL_PROFILE?></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
               	</thead>
@@ -63,6 +84,11 @@ include('../../Interfaz/Cabecera.php');
 						</tr>			    
                  </tbody>
             </table>
+            <?php
+}else{
+	echo '<h1 class="form-signin-heading ">'.ERR_PERM.'</h1>';
+}
+?>
 		</div>
 		
 		</body>

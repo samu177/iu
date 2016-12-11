@@ -1,4 +1,4 @@
-<?php
+0<?php
 	session_start();
 	//Comprobación del idioma seleccionado
 	if (isset($_REQUEST['idioma']) && $_REQUEST['idioma']!=''){
@@ -9,8 +9,10 @@
 	if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 			header("Location: ../index.php");
 	}
+	$idioma=$_SESSION['idioma'];
+	include("../../Assets/languages/".$idioma.".php");
+	include '../Models/USER_Model.php';
 
-	include '../Models/USUARIOS_Model.php';
 	
 	
 	$acc = (isset($_REQUEST['acc']) ? $_REQUEST['acc'] : "");
@@ -47,10 +49,10 @@
 						$_SESSION['mensaje']=$me;
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}elseif($usr==$_SESSION['user']){
-							$_SESSION['mensaje']="No puedes borrar tu propio perfil";
+							$_SESSION['mensaje']='DONT_DELETE_USR_OWN';
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}elseif($usr=="admin"){
-							$_SESSION['mensaje']="No puedes borrar el administrador";
+							$_SESSION['mensaje']='DONT_DELETE_USR_ADMIN';
 							header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}else{
 							header("Location: ../Views/GestUser/USER_DELETE_Vista.php?usr=$usr");
@@ -76,7 +78,7 @@
 								$_SESSION['mensaje']=$auxMod;
 								header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 							}else{
-								header("Location: ../Views/GestUser/USER_EDIT_Vista.php");
+								header("Location: ../Views/GestUser/USER_EDIT_Vista.php?usr=$usr");
 							}
 						}else{
 							$temp = new User($usr,$pass,$dni,$perf);

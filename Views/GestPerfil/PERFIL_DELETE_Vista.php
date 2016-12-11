@@ -5,6 +5,7 @@ if(!isset($_SESSION['idioma']) ){
     header("Location: ../../index.php?logout=true");
   }
 
+
 if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 header("Location: ../../index.php");
 }
@@ -18,8 +19,8 @@ include('../../Interfaz/Cabecera.php');
             <li class="glyphicon glyphicon-user" id="user"> <?=$_SESSION["user"]?></li>
             <li id="idioma"><?=IDIOMA?>: </li>
             <?php
-            echo '<li class="contBandera"><a href="../../Controllers/PERFIL_Controller.php?idioma=esp&acc=Consultar&perfil='.$perfil.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
-            echo '<li class="contBandera"><a href="../../Controllers/PERFIL_Controller.php?idioma=eng&acc=Consultar&perfil='.$perfil.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/PERFIL_Controller.php?idioma=esp&acc=¿Borrar?&perfil='.$perfil.'"><IMG SRC="../../Assets/img/bespanha.gif" class="bandera"> Esp </a></li>';
+            echo '<li class="contBandera"><a href="../../Controllers/PERFIL_Controller.php?idioma=eng&acc=¿Borrar?&perfil='.$perfil.'"><IMG SRC="../../Assets/img/buk.gif" class="bandera"> Eng </a></li>';
             ?>
           </ul>
         </div>
@@ -42,7 +43,7 @@ include('../../Interfaz/Cabecera.php');
 	$aceptado=false;
 	for ($i=0; $i < sizeof($comp); $i+=2){
 		$cadena=$comp[$i].$comp[$i+1];
-		if($cadena=="GEST_PERFSHOW"){
+		if($cadena=="GEST_PERFDELETE"){
 			$aceptado=true;
 		}
 	}
@@ -52,7 +53,7 @@ include('../../Interfaz/Cabecera.php');
 		<fieldset>
 		<!-- Form Name -->
 			
-			<legend><?=TITULO_SHOW_PROFILE?></legend>
+			<legend><?=DELETE_PROFILE?></legend>
 			
 		</fieldset>
 		
@@ -103,8 +104,8 @@ include('../../Interfaz/Cabecera.php');
 						  	</td>
 						  	<td align="center" >
 						  	<?php
-	                			echo '<a class="btn btn-default glyphicon glyphicon-pencil" href="../../Controllers/PERFIL_Controller.php?acc=Modificar&perfil='.$perfil.'"></em></a>';
-	                			echo '<a class="btn btn-default glyphicon glyphicon-trash" href="../../Controllers/PERFIL_Controller.php?acc=¿Borrar?&perfil='.$perfil.'"></em></a>';
+	                			echo '<a class="btn btn-danger glyphicon glyphicon-trash" href="../../Controllers/PERFIL_Controller.php?acc=Borrar&perfil='.$perfil.'"></em></a>';
+	                			echo '<a class="btn btn-info glyphicon glyphicon-home" href="../../Controllers/PERFIL_Controller.php?acc=Cancelar"></em></a>';
 	                		?>
 	            			</td>
 						</tr>			    

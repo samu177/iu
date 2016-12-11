@@ -9,7 +9,8 @@
 	if(isset($_SESSION['connected']) && $_SESSION["connected"] == "false"){
 			header("Location: ../index.php");
 	}
-
+	$idioma=$_SESSION['idioma'];
+	include("../../Assets/languages/".$idioma.".php");
 	include '../Models/PERFIL_Model.php';
 	
 	
@@ -49,11 +50,11 @@
 						$_SESSION['mensaje']=$me;
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 						}else{
-							header("Location: ../Views/GestPerfil/PERFIL_DELETE_Vista.php?usr=$usr");
+							header("Location: ../Views/GestPerfil/PERFIL_DELETE_Vista.php?perfil=$perf");
 						}
 						break;
 
-		case 'Borrar': 	$temp = new Perfil($usr,$pass,$dni,$perf);
+		case 'Borrar': 	$temp = new Perfil($perf);
 						$_SESSION['mensaje']=$temp->borrar();
 						header('Location: ../Views/Mensaje/MENSAJE_Vista.php');
 
